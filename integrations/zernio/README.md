@@ -63,3 +63,15 @@ npm run post-batch -- posts.json
 ```
 
 Each entry is created with `queuedFromProfile`, so Zernio assigns it the next available slot in order — never compute `scheduledFor` yourself from `/v1/queue/next-slot`, since that bypasses queue locking and can double-book a slot.
+
+### 100-topic series (fixed daily time slots)
+
+`post-series.js` publishes the 100-topic K-beauty SEA series (`content/kbeauty-sea-series/`, see that folder's README for the content pipeline) at three fixed daily times — 10:00 / 15:00 / 21:00 (Asia/Seoul) — with 5 different-topic posts per slot, in order. Each post is a 10-image carousel rendered from that topic's `cards/` folder.
+
+This uses explicit `scheduledFor` + `timezone` rather than `queuedFromProfile`, since it doesn't depend on a configured recurring queue.
+
+```bash
+npm run post-series -- --dry-run                  # preview the schedule, no upload/publish
+npm run post-series -- --start-date 2026-07-01     # upload + schedule starting on this date
+npm run post-series -- --from-id 16                # resume from topic 16 onward
+```
