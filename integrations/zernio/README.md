@@ -11,16 +11,17 @@ npm install
 
 ## Connect Instagram and Threads accounts
 
-Account connection is OAuth-based and must be done once in a browser (not scriptable):
+Account connection is OAuth-based and must be done once in a browser (not scriptable end-to-end). Instagram and Threads use the plain OAuth flow — no secondary page/org picker step (unlike Facebook, LinkedIn, Pinterest, Google Business, Snapchat).
 
-```js
-const zernio = require('./client');
-const { authUrl } = await zernio.connect.getConnectUrl({
-  platform: 'instagram', // or 'threads'
-  profileId: process.env.ZERNIO_PROFILE_ID,
-});
-console.log(authUrl); // open in a browser and authorize
+1. Set `ZERNIO_PROFILE_ID` in `.env` (create one first via `zernio.profiles.createProfile` if you don't have one).
+2. Run:
+
+```bash
+npm run connect -- instagram
+npm run connect -- threads
 ```
+
+3. Open the printed URL in a browser and authorize each account.
 
 Then run:
 
