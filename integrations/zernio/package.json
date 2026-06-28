@@ -1,0 +1,14 @@
+{
+  "name": "zernio-integration",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Zernio API integration for publishing the K-beauty SEA card news to Instagram and Threads",
+  "type": "commonjs",
+  "scripts": {
+    "list-accounts": "node list-accounts.js",
+    "post-cardnews": "node post-cardnews.js"
+  },
+  "dependencies": {
+    "@zernio/node": "^0.0.1"
+  }
+}
