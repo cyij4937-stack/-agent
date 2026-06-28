@@ -12,6 +12,7 @@
     "post-series": "node post-series.js"
   },
   "dependencies": {
-    "@zernio/node": "^0.0.1"
+    "@zernio/node": "^0.2.289",
+    "dotenv": "^17.4.2"
   }
 }
