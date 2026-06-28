@@ -42,3 +42,24 @@ This uploads all 10 cards in `content/kbeauty-sea-cardnews/cards/` via Zernio's 
 By default this creates a draft post (no `publishNow`/`scheduledFor`). Uncomment `publishNow: true` in `post-cardnews.js` to publish immediately, or add `scheduledFor`/`timezone` to schedule it.
 
 Note: uploaded media lives in temporary storage for 7 days until a post referencing it actually publishes — don't leave a draft sitting unpublished for too long, or re-run `post-cardnews` to re-upload.
+
+### Queue scheduling (drip-feed)
+
+Set `ZERNIO_USE_QUEUE=true` in `.env` (and `ZERNIO_PROFILE_ID`, plus optionally `ZERNIO_QUEUE_ID` to target a non-default queue) to have `post-cardnews` land on the profile's next free recurring slot instead of being created as an unscheduled draft.
+
+To drip-feed a whole series of posts (e.g. the country-by-country follow-ups), use `post-batch`:
+
+```bash
+npm run post-batch -- posts.json
+```
+
+`posts.json` format:
+
+```json
+[
+  { "content": "Post 1 text", "mediaPaths": ["../../content/.../card_01.png"] },
+  { "content": "Post 2 text", "mediaPaths": [] }
+]
+```
+
+Each entry is created with `queuedFromProfile`, so Zernio assigns it the next available slot in order — never compute `scheduledFor` yourself from `/v1/queue/next-slot`, since that bypasses queue locking and can double-book a slot.

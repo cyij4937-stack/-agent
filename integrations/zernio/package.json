@@ -7,7 +7,8 @@
   "scripts": {
     "connect": "node connect.js",
     "list-accounts": "node list-accounts.js",
-    "post-cardnews": "node post-cardnews.js"
+    "post-cardnews": "node post-cardnews.js",
+    "post-batch": "node post-batch.js"
   },
   "dependencies": {
     "@zernio/node": "^0.0.1"

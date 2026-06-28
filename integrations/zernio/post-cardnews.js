@@ -31,14 +31,28 @@ async function main() {
   if (igAccountId) platforms.push({ platform: 'instagram', accountId: igAccountId });
   if (threadsAccountId) platforms.push({ platform: 'threads', accountId: threadsAccountId });
 
+  const profileId = process.env.ZERNIO_PROFILE_ID;
+  const queueId = process.env.ZERNIO_QUEUE_ID; // optional, targets a specific queue
+  const useQueue = process.env.ZERNIO_USE_QUEUE === 'true';
+
+  const scheduling = useQueue
+    ? { queuedFromProfile: profileId, ...(queueId ? { queueId } : {}) }
+    : {};
+  // publishNow: true, // uncomment to publish immediately instead of drafting/queueing
+
+  if (useQueue && !profileId) {
+    throw new Error('ZERNIO_USE_QUEUE=true requires ZERNIO_PROFILE_ID in .env.');
+  }
+
   const { post } = await zernio.posts.createPost({
     content: CAPTION,
     mediaItems,
     platforms,
-    // publishNow: true, // uncomment to publish immediately instead of drafting
+    ...scheduling,
   });
 
   console.log('Post created:', post._id);
+  if (post.scheduledFor) console.log('Scheduled for:', post.scheduledFor);
 }
 
 main().catch((err) => {
