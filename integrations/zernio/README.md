@@ -37,8 +37,8 @@ and copy the resulting `_id` values into `.env` as `ZERNIO_INSTAGRAM_ACCOUNT_ID`
 npm run post-cardnews
 ```
 
+This uploads all 10 cards in `content/kbeauty-sea-cardnews/cards/` via Zernio's presigned-upload flow, then creates a post with those images attached. 10 images fits exactly within Instagram's carousel limit (10) and Threads' image limit (10).
+
 By default this creates a draft post (no `publishNow`/`scheduledFor`). Uncomment `publishNow: true` in `post-cardnews.js` to publish immediately, or add `scheduledFor`/`timezone` to schedule it.
 
-## Known gap
-
-Media (the 10 card PNGs) is not yet attached to the post — Zernio's media upload flow needs to be confirmed against `/guides/media-uploads` before that's wired up. Once confirmed, upload the files in `CARD_FILES` and attach the result to the `createPost` payload.
+Note: uploaded media lives in temporary storage for 7 days until a post referencing it actually publishes — don't leave a draft sitting unpublished for too long, or re-run `post-cardnews` to re-upload.

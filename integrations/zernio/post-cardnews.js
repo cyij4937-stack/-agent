@@ -1,10 +1,5 @@
-const path = require('path');
 const zernio = require('./client');
-
-const CARDS_DIR = path.join(__dirname, '..', '..', 'content', 'kbeauty-sea-cardnews', 'cards');
-const CARD_FILES = Array.from({ length: 10 }, (_, i) =>
-  path.join(CARDS_DIR, `card_${String(i + 1).padStart(2, '0')}.png`)
-);
+const { uploadCardImages } = require('./upload-media');
 
 const CAPTION = `동남아 뷰티 시장, 매년 10%씩 큰다.
 
@@ -28,9 +23,9 @@ async function main() {
     );
   }
 
-  // TODO: media attachment - Zernio's media upload endpoint isn't confirmed yet
-  // (see /guides/media-uploads). Once confirmed, upload CARD_FILES and attach
-  // the resulting media IDs/URLs to the post payload below.
+  console.log('Uploading 10 card images to Zernio media storage...');
+  const mediaItems = await uploadCardImages();
+  // Uploads land in temp storage (expires in 7 days); publish soon after running this.
 
   const platforms = [];
   if (igAccountId) platforms.push({ platform: 'instagram', accountId: igAccountId });
@@ -38,6 +33,7 @@ async function main() {
 
   const { post } = await zernio.posts.createPost({
     content: CAPTION,
+    mediaItems,
     platforms,
     // publishNow: true, // uncomment to publish immediately instead of drafting
   });
