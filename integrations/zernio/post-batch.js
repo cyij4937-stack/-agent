@@ -50,13 +50,16 @@ async function main() {
       mediaItems.push({ url: publicUrl, type: 'image' });
     }
 
-    const { post } = await zernio.posts.createPost({
-      content: p.content,
-      mediaItems,
-      platforms,
-      queuedFromProfile: profileId,
-      ...(queueId ? { queueId } : {}),
+    const { data } = await zernio.posts.createPost({
+      body: {
+        content: p.content,
+        mediaItems,
+        platforms,
+        queuedFromProfile: profileId,
+        ...(queueId ? { queueId } : {}),
+      },
     });
+    const { post } = data;
 
     console.log(`[${i + 1}/${posts.length}] queued -> ${post.scheduledFor} (${post._id})`);
   }

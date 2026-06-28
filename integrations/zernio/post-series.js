@@ -84,13 +84,16 @@ async function main() {
         mediaItems.push({ url: await uploadOne(f), type: 'image' });
       }
 
-      const { post } = await zernio.posts.createPost({
-        content: topic.caption,
-        mediaItems,
-        platforms,
-        scheduledFor,
-        timezone: TIMEZONE,
+      const { data } = await zernio.posts.createPost({
+        body: {
+          content: topic.caption,
+          mediaItems,
+          platforms,
+          scheduledFor,
+          timezone: TIMEZONE,
+        },
       });
+      const { post } = data;
       console.log(`  -> post ${post._id} scheduled for ${post.scheduledFor}`);
     }
 

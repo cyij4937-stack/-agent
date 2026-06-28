@@ -16,11 +16,13 @@ if (!profileId) {
 }
 
 (async () => {
-  const { authUrl } = await zernio.connect.getConnectUrl({
-    platform,
-    profileId,
-    redirectUrl: process.env.ZERNIO_REDIRECT_URL || 'https://zernio.com/connected',
+  const { data } = await zernio.connect.getConnectUrl({
+    path: { platform },
+    query: {
+      profileId,
+      redirect_url: process.env.ZERNIO_REDIRECT_URL || 'https://zernio.com/connected',
+    },
   });
-  console.log(`Open this URL in a browser and authorize ${platform}:\n${authUrl}`);
+  console.log(`Open this URL in a browser and authorize ${platform}:\n${data.authUrl}`);
   console.log('\nAfter authorizing, run `npm run list-accounts` to get the new account _id.');
 })();
