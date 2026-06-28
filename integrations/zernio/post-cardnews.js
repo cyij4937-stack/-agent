@@ -44,12 +44,15 @@ async function main() {
     throw new Error('ZERNIO_USE_QUEUE=true requires ZERNIO_PROFILE_ID in .env.');
   }
 
-  const { post } = await zernio.posts.createPost({
-    content: CAPTION,
-    mediaItems,
-    platforms,
-    ...scheduling,
+  const { data } = await zernio.posts.createPost({
+    body: {
+      content: CAPTION,
+      mediaItems,
+      platforms,
+      ...scheduling,
+    },
   });
+  const { post } = data;
 
   console.log('Post created:', post._id);
   if (post.scheduledFor) console.log('Scheduled for:', post.scheduledFor);
